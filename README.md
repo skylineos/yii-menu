@@ -8,6 +8,7 @@
 'modules' => [
     'menu' => [
         'class' => 'skylineos\yii\menu\Module',
+        'viewPath' => '@app/path/to/my/views',
     ],
 ],
 ```
