@@ -1,0 +1,34 @@
+{
+    "name": "skylineos/yii-menu",
+    "type": "yii2-extension",
+
+    "description": "Yii2 extention for creating and managing menus",
+    "keywords": [
+        "yii2", 
+        "bootstrap 4",
+        "menu"
+    ],
+    "license": "BSD-3-Clause",
+    "support": {
+        "issues": "https://github.com/skylineos/yii-menu/issues",
+        "source": "https://github.com/skylineos/yii-menu"
+    },
+    "authors": [
+        {
+            "name": "Damien Kemens",
+            "email": "dkemens@skylinenet.net"
+        }
+    ],
+    "require": {
+        "php": "~8.0.0",
+        "yiisoft/yii2": "~2.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "skylineos\\yii\\menu\\": ""
+        }
+    },
+
+    "minimum-stability": "stable",
+    "prefer-stable": true    
+}
