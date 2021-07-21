@@ -1,6 +1,7 @@
 <?php
 
 use yii\db\Migration;
+use skylineos\yii\menu\models\Menu;
 
 /**
  * Handles the creation of table `{{%Menu}}`.
@@ -15,7 +16,7 @@ class m210720_181953_createMenuTable extends Migration
         $this->createTable('{{%Menu}}', [
             'id' => $this->primaryKey(),
             'title' => $this->string()->notNull()->unique(),
-            'published' => $this->smallInteger()->notNull()->defaultValue(1),
+            'status' => $this->smallInteger()->notNull()->defaultValue(Menu::STATUS_PUBLISHED),
             'template' => $this->string()->notNull()->defaultValue('@vendor/skyline/yii-menu/views/menu/menu.php'),
             'dateCreated' => $this->datetime()->defaultExpression('NOW()'),
             'lastModified' => $this->datetime()->defaultExpression('NOW()'),

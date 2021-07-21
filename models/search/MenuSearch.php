@@ -17,7 +17,7 @@ class MenuSearch extends yii\base\Model
     {
         return [
             [['id', 'status', 'createdBy', 'modifiedBy'], 'integer'],
-            [['title', 'dateCreated', 'lastModified'], 'safe'],
+            [['title', 'template', 'dateCreated', 'lastModified'], 'safe'],
         ];
     }
 
@@ -45,7 +45,9 @@ class MenuSearch extends yii\base\Model
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => ['defaultOrder' => ['lastModified' => SORT_ASC]],
+            'sort' => [
+                'defaultOrder' => ['lastModified' => SORT_ASC]
+            ],
         ]);
 
         $this->load($params);
@@ -66,7 +68,9 @@ class MenuSearch extends yii\base\Model
             'lastModified' => $this->lastModified,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title]);
+
+        $query->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'template', $this->template]);
 
         return $dataProvider;
     }

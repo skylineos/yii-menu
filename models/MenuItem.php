@@ -1,6 +1,6 @@
 <?php
 
-namespace skylinos\yii\menu\models;
+namespace skylineos\yii\menu\models;
 
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;

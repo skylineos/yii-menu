@@ -1,6 +1,6 @@
 <?php
 
-namespace skylinos\yii\menu\models;
+namespace skylineos\yii\menu\models;
 
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
@@ -10,7 +10,7 @@ use yii\behaviors\BlameableBehavior;
  *
  * @property int $id
  * @property string $title
- * @property int $published  defaultValue(1)
+ * @property int $status  defaultValue(1)
  * @property string $template  defaultValue('@vendor/skyline/yii-menu/views/menu/menu.php')
  * @property string $dateCreated  defaultExpression('NOW()'),
  * @property string $lastModified  defaultExpression('NOW()'),
@@ -19,6 +19,16 @@ use yii\behaviors\BlameableBehavior;
  */
 class Menu extends \yii\db\ActiveRecord
 {
+    public const STATUS_DELETED = -1;
+    public const STATUS_UNPUBLISHED = 0;
+    public const STATUS_PUBLISHED = 1;
+
+    public const STATUS_TITLE = [
+        self::STATUS_DELETED => 'Deleted',
+        self::STATUS_UNPUBLISHED => 'Unpublished',
+        self::STATUS_PUBLISHED => 'Published',
+    ];
+
     /**
      * @inheritDoc
      *
@@ -62,8 +72,8 @@ class Menu extends \yii\db\ActiveRecord
     {
         return [
             [['title', 'template'], 'string', 'max' => 255],
-            [['title', 'template', 'published'], 'required'],
-            [['published', 'modifiedBy', 'createdBy'], 'integer'],
+            [['title', 'template', 'status'], 'required'],
+            [['status', 'modifiedBy', 'createdBy'], 'integer'],
         ];
     }
 
@@ -77,7 +87,7 @@ class Menu extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'title' => 'Title',
-            'published' => 'Published',
+            'status' => 'STATUS',
             'template' => 'Template',
             'dateCreated' => 'Date Created',
             'lastModified' => 'Last Modified',
