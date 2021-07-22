@@ -3,9 +3,9 @@
 namespace skylineos\yii\menu\controllers;
 
 use Yii;
-use skylineos\yii\cms\models\Menu;
-use skylineos\yii\cms\models\MenuItem;
-use skylineos\yii\cms\models\search\MenuSearch;
+use skylineos\yii\menu\models\Menu;
+use skylineos\yii\menu\models\MenuItem;
+use skylineos\yii\menu\models\search\MenuSearch;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -13,7 +13,7 @@ use yii\filters\AccessControl;
 /**
  * MenuController implements the CRUD actions for Menu model.
  */
-class MenuController extends yii\web\Controller
+class MenuController extends \yii\web\Controller
 {
     /**
     * {@inheritdoc}
@@ -27,7 +27,7 @@ class MenuController extends yii\web\Controller
                    [
                        'allow' => true,
                        'actions' => ['index', 'create', 'update', 'delete'],
-                       'roles' => ['@'],
+                       'roles' => ['?'],
                    ],
                ],
            ],
@@ -65,6 +65,7 @@ class MenuController extends yii\web\Controller
         $model = new Menu();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            \Yii::$app->session()->setFlash('success', 'Menu Created, you may now populate it.');
             return $this->redirect(['update', 'id' => $model->id]);
         }
 

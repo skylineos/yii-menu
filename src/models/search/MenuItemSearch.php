@@ -17,8 +17,27 @@ class MenuItemSearch extends MenuItem
     public function rules(): array
     {
         return [
-            [['id', 'sortOrder', 'parentItemId', 'createdBy', 'modifiedBy', 'menuId'], 'integer'],
-            [['title', 'linkTo', 'linkTarget', 'dateCreated', 'lastModified'], 'safe'],
+            [
+                [
+                    'id',
+                    'sortOrder',
+                    'parentItemId',
+                    'createdBy',
+                    'modifiedBy',
+                    'menuId'
+                ],
+                'integer'
+            ],
+            [
+                [
+                    'title',
+                    'linkTo',
+                    'linkTarget',
+                    'dateCreated',
+                    'lastModified'
+                ],
+                'safe'
+            ],
         ];
     }
 

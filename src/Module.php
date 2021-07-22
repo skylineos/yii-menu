@@ -2,12 +2,17 @@
 
 namespace skylineos\yii\menu;
 
-class Menu extends \yii\base\Module
+class Module extends \yii\base\Module
 {
     /**
      * @inheritdoc
      */
     public $controllerNamespace = 'skylineos\yii\menu\controllers';
+
+    /**
+     * @inheritDoc
+     */
+    public $defaultRoute = 'menu';
 
     /**
      * @todo confirm this path

@@ -2,32 +2,39 @@
 
 namespace skylineos\yii\menu\models\search;
 
-use skylineos\yii\menu\models\Menu;
 use yii\data\ActiveDataProvider;
+use skylineos\yii\menu\models\Menu;
 
 /**
  * MenuSearch represents the model behind the search form of `skylineos\yii\menu\models\Menu`.
  */
-class MenuSearch extends yii\base\Model
+class MenuSearch extends Menu
 {
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            [['id', 'status', 'createdBy', 'modifiedBy'], 'integer'],
-            [['title', 'template', 'dateCreated', 'lastModified'], 'safe'],
+            [
+                [
+                    'id',
+                    'status',
+                    'createdBy',
+                    'modifiedBy'
+                ],
+                'integer'
+            ],
+            [
+                [
+                    'title',
+                    'template',
+                    'dateCreated',
+                    'lastModified'
+                ],
+                'safe'
+            ],
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function scenarios()
-    {
-        // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
     }
 
     /**

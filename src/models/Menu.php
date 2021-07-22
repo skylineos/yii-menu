@@ -24,9 +24,9 @@ class Menu extends \yii\db\ActiveRecord
     public const STATUS_PUBLISHED = 1;
 
     public const STATUS_TITLE = [
-        self::STATUS_DELETED => 'Deleted',
-        self::STATUS_UNPUBLISHED => 'Unpublished',
         self::STATUS_PUBLISHED => 'Published',
+        self::STATUS_UNPUBLISHED => 'Unpublished',
+        self::STATUS_DELETED => 'Deleted',
     ];
 
     /**
@@ -51,7 +51,7 @@ class Menu extends \yii\db\ActiveRecord
                 'class' => TimestampBehavior::className(),
                 'createdAtAttribute' => ['dateCreated', 'lastModified'],
                 'updatedAtAttribute' => ['lastModified'],
-                'value' => new Expression('NOW()'),
+                'value' => new \yii\db\Expression('NOW()'),
             ],
             [
                 'class' => BlameableBehavior::className(),
@@ -87,7 +87,7 @@ class Menu extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'title' => 'Title',
-            'status' => 'STATUS',
+            'status' => 'Status',
             'template' => 'Template',
             'dateCreated' => 'Date Created',
             'lastModified' => 'Last Modified',
