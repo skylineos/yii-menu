@@ -16,7 +16,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'status')->dropDownList(\skylineos\yii\menu\models\Menu::STATUS_TITLE) ?>
 
-    <?= $form->field($model, 'template')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'template')->dropDownList(\Yii::$app->getModule('menu')->templates) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

@@ -27,7 +27,7 @@ class MenuController extends \yii\web\Controller
                    [
                        'allow' => true,
                        'actions' => ['index', 'create', 'update', 'delete'],
-                       'roles' => ['?'],
+                       'roles' => ['?', '@'],
                    ],
                ],
            ],
@@ -65,7 +65,7 @@ class MenuController extends \yii\web\Controller
         $model = new Menu();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            \Yii::$app->session()->setFlash('success', 'Menu Created, you may now populate it.');
+            \Yii::$app->session->setFlash('success', 'Menu Created, you may now populate it.');
             return $this->redirect(['update', 'id' => $model->id]);
         }
 
@@ -93,8 +93,8 @@ class MenuController extends \yii\web\Controller
 
         return $this->render('update', [
             'model' => $model,
-            'parent' => \Yii::$app->request->get('parentId')
-                ? MenuItem::findOne(\Yii::$app->request->get('parentId'))
+            'parent' => \Yii::$app->request->get('parentItemId')
+                ? MenuItem::findOne(\Yii::$app->request->get('parentItemId'))
                 : null,
             'menuItemSearchModel' => $menuItemSearchModel,
         ]);

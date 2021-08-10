@@ -81,7 +81,7 @@ class MenuItemSearch extends MenuItem
             $query->andWhere(['menuId' => $menuId]);
         }
 
-        if ($parentId !== null) {
+        if ($parentItemId !== null) {
             $query->andWhere(['parentItemId' => $parentItemId]);
         }
 

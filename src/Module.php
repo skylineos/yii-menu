@@ -15,6 +15,15 @@ class Module extends \yii\base\Module
     public $defaultRoute = 'menu';
 
     /**
+     * List of namespace => name templates to offer as styles when managing menus
+     *
+     * @var array
+     */
+    public $templates = [
+        'skylineos\yii\menu\widgets\MenuWidget' => 'Default',
+    ];
+
+    /**
      * @todo confirm this path
      * @var string the path to the default menu view if no other template is provided
      */
