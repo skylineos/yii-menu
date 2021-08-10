@@ -27,7 +27,7 @@ class MenuController extends \yii\web\Controller
                    [
                        'allow' => true,
                        'actions' => ['index', 'create', 'update', 'delete'],
-                       'roles' => ['?', '@'],
+                       'roles' => \Yii::$app->controller->module->roles,
                    ],
                ],
            ],

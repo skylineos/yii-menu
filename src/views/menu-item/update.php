@@ -3,14 +3,14 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model skylineos\yii\menu\models\Menu */
+/* @var $model skylineos\yii\menu\models\MenuItem */
 
-$this->title = 'Update Menu: ' . $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Menus', 'url' => ['index']];
+$this->title = 'Update Menu Item: ' . $model->title;
+$this->params['breadcrumbs'][] = ['label' => 'Menu Items', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="menu-update">
+<div class="menu-item-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -19,7 +19,3 @@ $this->params['breadcrumbs'][] = 'Update';
     ]) ?>
 
 </div>
-
-<hr>
-
-<?= $this->render('/menu-item/index') ?>

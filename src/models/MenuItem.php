@@ -5,6 +5,7 @@ namespace skylineos\yii\menu\models;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use himiklab\sortablegrid\SortableGridBehavior;
+use yii\db\Expression;
 
 /**
  * The model class for the table MenuItem

@@ -19,8 +19,17 @@ class Module extends \yii\base\Module
      *
      * @var array
      */
-    public $templates = [
+    public array $templates = [
         'skylineos\yii\menu\widgets\MenuWidget' => 'Default',
+    ];
+
+    /**
+     * List of roles that are able to access this module
+     *
+     * @var array
+     */
+    public array $roles = [
+        '@',
     ];
 
     /**
