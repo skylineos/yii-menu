@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'linkTo')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'linkTo')->dropDownList(skylineos\yii\menu\models\MenuItem::getTargets()) ?>
 
     <?= $form->field($model, 'linkTarget')->textInput(['maxlength' => true]) ?>
 

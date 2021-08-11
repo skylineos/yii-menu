@@ -4,6 +4,8 @@ namespace skylineos\yii\menu;
 
 class Module extends \yii\base\Module
 {
+    public const DEFAULT_PK = 'id';
+
     /**
      * @inheritdoc
      */
@@ -13,6 +15,12 @@ class Module extends \yii\base\Module
      * @inheritDoc
      */
     public $defaultRoute = 'menu';
+
+    /**
+     * The array of slug => title targets.
+     * @see readme
+     */
+    public array $targets = [];
 
     /**
      * List of namespace => name templates to offer as styles when managing menus

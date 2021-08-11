@@ -4,8 +4,9 @@ namespace skylineos\yii\menu\models;
 
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
-use himiklab\sortablegrid\SortableGridBehavior;
 use yii\db\Expression;
+use yii\helpers\ArrayHelper;
+use himiklab\sortablegrid\SortableGridBehavior;
 
 /**
  * The model class for the table MenuItem
@@ -26,6 +27,7 @@ use yii\db\Expression;
  * @property MenuItem $parentItem
  *
  * @property int $maxSort
+ * @property array $targets
  */
 class MenuItem extends \yii\db\ActiveRecord
 {
@@ -139,5 +141,94 @@ class MenuItem extends \yii\db\ActiveRecord
     public function getParentItem(): yii\db\ActiveQuery
     {
         return $this->hasOne(self::className(), ['id' => 'parentItemId']);
+    }
+
+    /**
+     * Builds the list of slugs => titles for the drop down of a menu item
+     *
+     * @return array
+     */
+    public static function getTargets(): array
+    {
+        $module = \Yii::$app->getModule('menu');
+        $targets = [];
+
+        foreach ($module->targets as $targetClass => $targetConfig) {
+            $query = $targetClass::find();
+            $group = \array_key_exists('dropdownGroup', $targetConfig) ? $targetConfig['dropdownGroup'] : $targetClass;
+            $pk = \array_key_exists('pk', $targetConfig) ? $targetConfig['pk'] : $module::DEFAULT_PK;
+
+            /**
+             * @todo: I imagine this can be cleaned up
+             */
+            if (!\is_array($targetConfig['display'])) {
+                $query->andFilterWhere(\array_key_exists('where', $targetConfig) ? $targetConfig['where'] : []);
+
+                if (\array_key_exists('orderBy', $targetConfig)) {
+                    $query->orderBy($targetConfig['orderBy']);
+                }
+
+                $targets[$group] = ArrayHelper::map(
+                    $query->all(),
+                    $targetConfig['slug'],
+                    $targetConfig['display']
+                );
+            } else {
+                // literal
+                if ($targetConfig['literal'] === true) {
+                    $tableName = $targetConfig['className']::tableName;
+
+                    $leftJoinery = $tableName . '.' . $pk;
+                    $rightJoinery = $targetClass . '.' . $targetConfig['fk'];
+
+                    $query->leftJoin($tableName, "$leftJoinery = $rightJoinery");
+
+                    $query->andFilterWhere(\array_key_exists('where', $targetConfig) ? $targetConfig['where'] : []);
+
+                    if (\array_key_exists('orderBy', $targetConfig)) {
+                        $query->orderBy($targetConfig['orderBy']);
+                    }
+
+                    $targets[$group] = ArrayHelper::map(
+                        $query->all(),
+                        $targetConfig['slug'],
+                        $targetConfig['display']['property']
+                    );
+                } else {
+                    // Non literal
+                    $query->andFilterWhere(\array_key_exists('where', $targetConfig) ? $targetConfig['where'] : []);
+
+                    if (\array_key_exists('orderBy', $targetConfig)) {
+                        $query->orderBy($targetConfig['orderBy']);
+                    }
+
+                    $results = $query->all();
+
+                    $targets[$group] = ArrayHelper::map(
+                        $query->all(),
+                        $targetConfig['slug'],
+                        function ($model) use ($pk, $targetConfig) {
+                            $fk = $targetConfig['display']['fk'];
+                            $className = $model->model;
+                            $subQuery = $className::find();
+                            $subQuery->where([$pk => $model->$fk]);
+                            $subQuery->andFilterWhere(
+                                \array_key_exists('where', $targetConfig['display'])
+                                    ? $targetConfig['display']['where']
+                                    : []
+                            );
+
+                            if (\array_key_exists('orderBy', $targetConfig['display'])) {
+                                $subQuery->orderBy($targetConfig['display']['orderBy']);
+                            }
+
+                            return $subQuery->one()->{$targetConfig['display']['property']};
+                        }
+                    );
+                }
+            }
+        }
+
+        return $targets;
     }
 }
