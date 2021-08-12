@@ -12,11 +12,17 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'status')->dropDownList(\skylineos\yii\menu\models\Menu::STATUS_TITLE) ?>
-
-    <?= $form->field($model, 'template')->dropDownList(\Yii::$app->getModule('menu')->templates) ?>
+    <div class="row">
+        <div class="col">
+            <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col">
+            <?= $form->field($model, 'status')->dropDownList(\skylineos\yii\menu\models\Menu::STATUS_TITLE) ?>
+        </div>
+        <div class="col">
+            <?= $form->field($model, 'template')->dropDownList(\Yii::$app->getModule('menu')->templates) ?>
+        </div>
+    </div>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

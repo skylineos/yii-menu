@@ -44,9 +44,11 @@ class MenuItemController extends \yii\web\Controller
      * If creation is successful, the browser will be redirected to the Menu Update page
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate(int $menuId, ?int $parentItemId = null)
     {
         $model = new MenuItem();
+        $model->menuId = $menuId;
+        $model->parentItemId = $parentItemId;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             \Yii::$app->session->setFlash('success', 'Menu Item Created.');

@@ -22,4 +22,6 @@ $this->params['breadcrumbs'][] = 'Update';
 
 <hr>
 
-<?= $this->render('/menu-item/index') ?>
+<?= $this->render('/menu-item/index', [
+    'menuId' => $model->id,
+]) ?>

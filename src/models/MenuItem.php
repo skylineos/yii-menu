@@ -37,7 +37,7 @@ class MenuItem extends \yii\db\ActiveRecord
      *
      * @var int|null
      */
-    private ?int $maxSort;
+    public ?int $maxSort;
 
     /**
      * @inheritDoc
@@ -98,6 +98,7 @@ class MenuItem extends \yii\db\ActiveRecord
                     ->one();
                 return $maxSortOrder->maxSort < 1 ? 1 : $maxSortOrder->maxSort + 1;
             }],
+            [['maxSort'], 'safe'],
         ];
     }
 
