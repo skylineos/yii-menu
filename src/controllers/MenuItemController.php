@@ -39,6 +39,19 @@ class MenuItemController extends \yii\web\Controller
         ];
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function beforeAction($action)
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        $this->viewPath = rtrim(\Yii::$app->controller->module->viewPath, '/') . '/menu-item';
+        return true;
+    }
+
     public function actionView(int $id): array
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;

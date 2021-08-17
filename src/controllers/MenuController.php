@@ -42,6 +42,20 @@ class MenuController extends \yii\web\Controller
         ];
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    public function beforeAction($action)
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        $this->viewPath = rtrim(\Yii::$app->controller->module->viewPath, '/') . '/menu';
+        return true;
+    }
+
     public function actionDemo(int $id): string
     {
         return $this->render('demo', [

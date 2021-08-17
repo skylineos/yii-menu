@@ -41,8 +41,7 @@ class Module extends \yii\base\Module
     ];
 
     /**
-     * @todo confirm this path
-     * @var string the path to the default menu view if no other template is provided
+     * @var string the path to the base views directory
      */
     public string $viewPath = '@vendor/skylineos/yii-menu/views/menu/menu';
 

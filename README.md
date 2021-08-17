@@ -1,5 +1,18 @@
 # Yii2 Menu
 
+## Installation
+
+*Composer:*
+
+`"skylineos/yii-menu": "~1.0"`
+
+*Run Migrations:*
+
+`php yii migrate/up --migrationPath=vendor/skylineos/yii-menu/src/migrations`
+
+Once configured (below), you should be able to access the manager at /menu/menu/index
+
+
 ## Configuration
 
 > config/web.php
@@ -8,7 +21,8 @@
 'modules' => [
     'menu' => [
         'class' => 'skylineos\yii\menu\Module',
-        'viewPath' => '@app/path/to/my/views',
+        'viewPath' => '@app/path/to/my/admin/views', // eg. @app/modules/cms/views. The system looks for [menu|menu-item] folders
+        'roles' => ['@'], // optional yii authorization roles
 
         // Additional templates can be added as such: (namespace => display/friendly name)
         'templates' => [
@@ -45,7 +59,7 @@ module:
         'display' => [
             'literal' => false,
             'className' => 'model',
-            'pk' => 'id' // The primary key on the foreign model. If not provided, 'id' will be assumed
+            'pk' => 'id', // The primary key on the foreign model. If not provided, 'id' will be assumed
             'fk' => 'modelId',
             'property' => 'title',
             'where' => [], // optional
@@ -63,7 +77,7 @@ module:
         'display' => [
             'literal' => true,
             'className' => 'app\models\Product',
-            'pk' => 'id' // The primary key on the foreign model. If not provided, 'id' will be assumed
+            'pk' => 'id', // The primary key on the foreign model. If not provided, 'id' will be assumed
             'fk' => 'modelId',
             'property' => 'metaTitle',
         ],
