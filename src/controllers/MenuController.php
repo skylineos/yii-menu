@@ -9,6 +9,7 @@ use skylineos\yii\menu\models\search\MenuSearch;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\helpers\Html;
 
 /**
  * MenuController implements the CRUD actions for Menu model.
@@ -101,10 +102,7 @@ class MenuController extends \yii\web\Controller
 
         return $this->render('update', [
             'model' => $model,
-            'parent' => \Yii::$app->request->get('parentItemId')
-                ? MenuItem::findOne(\Yii::$app->request->get('parentItemId'))
-                : null,
-            'menuItemSearchModel' => $menuItemSearchModel,
+            'menuTree' => $this->renderAdminTree($model->id),
         ]);
     }
 
@@ -180,5 +178,85 @@ class MenuController extends \yii\web\Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    private function renderAdminTree(int $menuId, ?int $parentItemId = null, ?array $items = null)
+    {
+        $ret = '';
+
+        if ($items === null) {
+            $items = $this->getItems($menuId, $parentItemId);
+        }
+
+        if (\count($items) > 0) {
+            $baseClass = 'list-group list-unstyled';
+            $class = $parentItemId === null ? "$baseClass sortable" : "$baseClass collapse show";
+            $id = $parentItemId === null ? 'menuItemWrapper' : "item-$parentItemId";
+            $ret .= Html::beginTag('ul', ['class' => $class, 'id' => $id]);
+        }
+
+        $x = 0;
+        foreach ($items as $item) {
+            $ret .= Html::beginTag('li', [
+                'id' => "menuItem_$item->id",
+            ]);
+            $ret .= $this->renderMenuItem($item, $menuId);
+
+            if ($x === count($items)) {
+                $ret .= '</li>';
+            }
+
+            $subItems = $this->getItems($menuId, $item->id);
+            $ret .= $this->renderAdminTree($menuId, $item->id, $subItems);
+        }
+
+        if (\count($items) > 0) {
+            $ret .= Html::endTag('ul');
+        }
+
+        return $ret;
+    }
+
+    private function getItems(int $menuId, ?int $parentItemId = null): array
+    {
+        return MenuItem::find()
+            ->where(['menuId' => $menuId, 'parentItemId' => $parentItemId])
+            ->orderBy('sortOrder ASC')
+            ->all();
+    }
+
+    private function renderMenuItem(\skylineos\yii\menu\models\MenuItem $item, int $menuId): string
+    {
+        $addItem = Html::tag(
+            'span',
+            '<i class="fal fa-plus-square"></i>',
+            [
+                'class' => 'menu-item-button add-item pull-right text-success',
+                'data-id' => $item->id,
+                'data-toggle' => 'tooltip',
+                'title' => 'Create Sub-Item',
+            ]
+        );
+
+        $deleteItem = Html::tag(
+            'span',
+            '<i class="fal fa-minus-square"></i>',
+            [
+                'class' => 'menu-item-button delete-item pull-right text-danger',
+                'data-id' => $item->id,
+                'data-toggle' => 'tooltip',
+                'title' => 'Delete',
+            ]
+        );
+
+        return Html::a(
+            "<i class=\"fas fa-angle-down mr-2\"></i> $item->title $deleteItem $addItem",
+            '#item-' . $item->id,
+            [
+                'class' => 'list-group-item',
+                'data-toggle' => 'collapse',
+                'data-id' => $item->id,
+            ]
+        );
     }
 }
