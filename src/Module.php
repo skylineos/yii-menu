@@ -43,7 +43,7 @@ class Module extends \yii\base\Module
     /**
      * @var string the path to the base views directory
      */
-    public string $viewPath = '@vendor/skylineos/yii-menu/views/menu/menu';
+    public string $viewPath = '@vendor/skylineos/yii-menu/src/views';
 
     public function init()
     {

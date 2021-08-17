@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = 'Create';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'templateDisabled' => $templateDisabled,
     ]) ?>
 
 </div>

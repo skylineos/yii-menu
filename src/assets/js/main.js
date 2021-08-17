@@ -30,10 +30,18 @@ $(function() {
 
     $('.list-group-item').click( function(e) {
         $.get('/menu/menu-item/view?id=' + $(this).attr('data-id'), function(data) {
+            console.table(data);
             $('#menuitem-id').val(data.id);
             $('#menuitem-title').val(data.title).removeAttr('disabled');
             $('#menuitem-linkto').val(data.linkTo).removeAttr('disabled').trigger('change');
             $('#menuitem-linktarget').val(data.linkTarget).removeAttr('disabled').trigger('change');
+            $('#menuitem-template').val(data.template).trigger('change');
+
+            if (data.templateDisabled == false) {
+                $('#menuitem-template').removeAttr('disabled');
+            } else {
+                $('#menuitem-template').attr('disabled', 'true');
+            }
         });
     });
 

@@ -13,6 +13,7 @@ use yii\helpers\ArrayHelper;
  * @property int $id
  * @property int $menuId
  * @property int|null $parentItemId
+ * @property string $template
  * @property string $title
  * @property string|null $linkTo
  * @property string|null $linkTarget
@@ -30,6 +31,11 @@ use yii\helpers\ArrayHelper;
  */
 class MenuItem extends \yii\db\ActiveRecord
 {
+    /**
+     * Depth after which template option is disabled (to prevent nested template logic)
+     */
+    private const TEMPLATE_THRESHOLD = 0;
+
     /**
      * The maximum sortOrder of all items in the table. Used for giving
      * new items a sortOrder on creation.
@@ -80,7 +86,7 @@ class MenuItem extends \yii\db\ActiveRecord
     public function rules(): array
     {
         return [
-            [['title', 'linkTo', 'linkTarget'], 'string', 'max' => 255],
+            [['title', 'linkTo', 'linkTarget', 'template'], 'string', 'max' => 255],
             [['title', 'menuId'], 'required'],
             [['menuId', 'parentItemId', 'sortOrder', 'modifiedBy', 'createdBy'], 'integer'],
             [['sortOrder'], 'default', 'value' => function ($model, $attribute) {
@@ -108,6 +114,7 @@ class MenuItem extends \yii\db\ActiveRecord
             'id' => 'ID',
             'menuId' => 'Menu ID',
             'parentItemId' => 'Parent Item ID',
+            'template' => 'Menu Template',
             'title' => 'Title',
             'linkTo' => 'Link',
             'linkTarget' => 'Link Target',
@@ -226,5 +233,37 @@ class MenuItem extends \yii\db\ActiveRecord
         }
 
         return $targets;
+    }
+
+    /**
+     * Ensures that the depth of the menuItem being created or updated does not exceed
+     * the TEMPLATE THRESHOLD - that being the maximum depth at which we'll still conisder
+     * templates
+     *
+     * If you exhibit symtoms of Nested Template Syndrome, please contact your System Administrator
+     *
+     * @param integer|null $parentItemId
+     * @return boolean
+     */
+    public static function exceedsTemplateThreshold(?int $parentItemId): bool
+    {
+        if ($parentItemId === null) {
+            return false;
+        }
+
+        $x = 0;
+
+        while ($x < self::TEMPLATE_THRESHOLD) {
+            $parent = MenuItem::find()->where(['id' => $parentItemId])->one();
+            $parentItemId = $parent->parentItemId;
+
+            if ($parentItemId === null) {
+                return false;
+            }
+
+            $x++;
+        }
+
+        return true;
     }
 }

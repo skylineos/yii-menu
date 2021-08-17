@@ -62,6 +62,8 @@ class MenuItemController extends \yii\web\Controller
             'title' => $model->title,
             'linkTo' => $model->linkTo,
             'linkTarget' => $model->linkTarget,
+            'template' => $model->template,
+            'templateDisabled' => MenuItem::exceedsTemplateThreshold($model->parentItemId),
         ];
     }
 
@@ -75,6 +77,12 @@ class MenuItemController extends \yii\web\Controller
         $model = new MenuItem();
         $model->menuId = $menuId;
         $model->parentItemId = $parentItemId;
+        $templateDisabled = false;
+
+        if (MenuItem::exceedsTemplateThreshold($parentItemId) === true) {
+            $templateDisabled = true;
+            $model->template = null; // a null template equates to inheriting the parent
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             \Yii::$app->session->setFlash('success', 'Menu Item Created.');
@@ -83,6 +91,7 @@ class MenuItemController extends \yii\web\Controller
 
         return $this->render('create', [
             'model' => $model,
+            'templateDisabled' => $templateDisabled,
         ]);
     }
 

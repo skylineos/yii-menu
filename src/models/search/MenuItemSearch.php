@@ -34,7 +34,8 @@ class MenuItemSearch extends MenuItem
                     'linkTo',
                     'linkTarget',
                     'dateCreated',
-                    'lastModified'
+                    'lastModified',
+                    'template',
                 ],
                 'safe'
             ],
@@ -103,6 +104,7 @@ class MenuItemSearch extends MenuItem
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'template', $this->template])
             ->andFilterWhere(['like', 'linkTo', $this->linkTo])
             ->andFilterWhere(['like', 'linkTarget', $this->linkTarget]);
 

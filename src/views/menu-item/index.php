@@ -54,6 +54,21 @@ ExtAsset::register($this);
                                 'disabled' => true,
                             ]) ?>
                         </div>
+
+                        <div class="form-group">
+                            <label>Menu Template</label>
+                            <?= Html::dropDownList(
+                                'MenuItem[template]',
+                                null,
+                                \Yii::$app->getModule('menu')->templates,
+                                [
+                                    'class' => 'form-control',
+                                    'id' => 'menuitem-template',
+                                    'disabled' => true,
+                                ]
+                            ) ?>
+                            <div class="help-text">Will be disabled if the menu item depth exceeds that which templating can support</div>
+                        </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
@@ -69,8 +84,7 @@ ExtAsset::register($this);
                                 ]
                             ) ?>
                         </div>
-                    </div>
-                    <div class="col">
+
                         <div class="form-group">
                             <label>Link Target</label>
                             <?= Html::dropDownList(
