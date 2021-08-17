@@ -26,7 +26,7 @@ class MenuController extends \yii\web\Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'create', 'update', 'delete', 'sort'],
+                        'actions' => ['index', 'create', 'update', 'delete', 'sort', 'demo'],
                         'roles' => \Yii::$app->controller->module->roles,
                     ],
                 ],
@@ -39,6 +39,13 @@ class MenuController extends \yii\web\Controller
                 ],
             ],
         ];
+    }
+
+    public function actionDemo(int $id): string
+    {
+        return $this->render('demo', [
+            'menuId' => $id,
+        ]);
     }
 
     /**
