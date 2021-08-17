@@ -178,7 +178,7 @@ class MenuItem extends \yii\db\ActiveRecord
                 );
             } else {
                 // literal
-                if ($targetConfig['literal'] === true) {
+                if (isset($targetConfig['display']['literal']) && $targetConfig['display']['literal'] === true) {
                     $tableName = $targetConfig['className']::tableName;
 
                     $leftJoinery = $tableName . '.' . $pk;

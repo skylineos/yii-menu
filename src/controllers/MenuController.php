@@ -112,7 +112,7 @@ class MenuController extends \yii\web\Controller
             return $this->redirect(['index']);
         }
 
-        $menuItemSearchModel = new \skyline\yii\cms\models\search\MenuItemSearch();
+        $menuItemSearchModel = new \skylineos\yii\menu\models\search\MenuItemSearch();
 
         return $this->render('update', [
             'model' => $model,

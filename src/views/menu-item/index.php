@@ -14,9 +14,12 @@ ExtAsset::register($this);
 ?>
 
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="card">
+
             <div class="card-body just-padding">
+                <h3>Menu Items <small>(Drag and drop to sort)</small></h3>
+
                 <?= $menuTree ?>
             </div>
         </div>
@@ -32,9 +35,10 @@ ExtAsset::register($this);
         </div>
     </div>
     <div class="col">
-        <div class="card">
+        <div class="card position-fixed">
             <div class="card-body">
 
+                <h3>Menu Item Details <small>(click a menu item to edit)</small></h3>
 
                 <?php $form = ActiveForm::begin([
                     'action' => '/menu/menu-item/update',

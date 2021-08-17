@@ -2,7 +2,7 @@
 
 namespace skylineos\yii\menu\models\search;
 
-use skylineos\yii\cms\models\MenuItem;
+use skylineos\yii\menu\models\MenuItem;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
