@@ -24,6 +24,24 @@
         "yiisoft/yii2": "~2.0.0",
         "yiisoft/yii2-bootstrap4": "~2.0.10"
     },
+
+    "require-dev": {
+        "codeception/codeception": "*",
+        "nathanmac/datetime-codeception-module": "~1.0",
+        "codeception/module-phpbrowser": "^1.0.0",
+        "codeception/module-asserts": "^1.0.0",
+        "codeception/assert-throws": "*",
+        "codeception/module-db": "*",
+        "codeception/specify": "*",
+        "codeception/verify": "*",
+        "squizlabs/php_codesniffer": "*",
+        "phpunit/php-code-coverage": "*",
+        "codeception/module-yii2": "*",
+        "yiisoft/yii2-debug": "~2.1.0",
+        "fzaninotto/faker": "*",
+        "yiisoft/yii2-bootstrap4": "~2.0.6"
+    },
+
     "autoload": {
         "psr-4": {
             "skylineos\\yii\\menu\\": "src"
