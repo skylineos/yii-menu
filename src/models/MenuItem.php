@@ -6,7 +6,6 @@ use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
-use himiklab\sortablegrid\SortableGridBehavior;
 
 /**
  * The model class for the table MenuItem
@@ -70,10 +69,6 @@ class MenuItem extends \yii\db\ActiveRecord
                 'defaultValue' => 1,
                 'preserveNonEmptyValues' => true,
             ],
-            'sort' => [
-                'class' => SortableGridBehavior::className(),
-                'sortableAttribute' => 'sortOrder'
-            ],
         ];
     }
 
@@ -94,7 +89,7 @@ class MenuItem extends \yii\db\ActiveRecord
                     ->where([
                         'menuId' => $model->menuId,
                         'parentItemId' => $model->parentItemId,
-                        ])
+                    ])
                     ->one();
                 return $maxSortOrder->maxSort < 1 ? 1 : $maxSortOrder->maxSort + 1;
             }],

@@ -20,22 +20,35 @@ class MenuItemController extends \yii\web\Controller
     public function behaviors()
     {
         return [
-           'access' => [
-               'class' => AccessControl::className(),
-               'rules' => [
-                   [
-                       'allow' => true,
-                       'actions' => ['index', 'create', 'update', 'delete'],
-                       'roles' => \Yii::$app->controller->module->roles,
-                   ],
-               ],
-           ],
-           'verbs' => [
-               'class' => VerbFilter::className(),
-               'actions' => [
-                   'delete' => ['POST'],
-               ],
-           ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['create', 'update', 'delete', 'view'],
+                        'roles' => \Yii::$app->controller->module->roles,
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
+    }
+
+    public function actionView(int $id): array
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $model = $this->findModel($id);
+
+        return [
+            'id' => $model->id,
+            'title' => $model->title,
+            'linkTo' => $model->linkTo,
+            'linkTarget' => $model->linkTarget,
         ];
     }
 
@@ -58,5 +71,50 @@ class MenuItemController extends \yii\web\Controller
         return $this->render('create', [
             'model' => $model,
         ]);
+    }
+
+    /**
+     * Updates an existing MenuItem model.
+     * If update is successful, the browser will be redirected to the menu update page
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionUpdate()
+    {
+        $model = $this->findModel(Yii::$app->request->post()['MenuItem']['id']);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['menu/update', 'id' => $model->menuId]);
+        }
+    }
+
+    /**
+     * Deletes an existing Menu model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionDelete($id)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $this->findModel($id)->delete();
+    }
+
+    /**
+     * Finds the Menu model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Menu the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = MenuItem::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

@@ -21,22 +21,23 @@ class MenuController extends \yii\web\Controller
     public function behaviors()
     {
         return [
-           'access' => [
-               'class' => AccessControl::className(),
-               'rules' => [
-                   [
-                       'allow' => true,
-                       'actions' => ['index', 'create', 'update', 'delete'],
-                       'roles' => \Yii::$app->controller->module->roles,
-                   ],
-               ],
-           ],
-           'verbs' => [
-               'class' => VerbFilter::className(),
-               'actions' => [
-                   'delete' => ['POST'],
-               ],
-           ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'create', 'update', 'delete', 'sort'],
+                        'roles' => \Yii::$app->controller->module->roles,
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                    'sort' => ['POST'],
+                ],
+            ],
         ];
     }
 
@@ -112,6 +113,50 @@ class MenuController extends \yii\web\Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * Post endpoint used to sort menu-items for a given menu on drag & drop sort mechanism
+     * Response is json encoded
+     *
+     * @return array
+     */
+    public function actionSort(): array
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $post = \Yii::$app->request->post();
+
+        if (!$post['menuId']) {
+            return [
+                'statusCode' => 400,
+                'message' => 'Missing required parameter: (int)menuId',
+            ];
+        }
+
+        if (!$post['items']) {
+            return [
+                'statusCode' => 400,
+                'message' => 'Missing required parameter: (string)items',
+            ];
+        }
+
+        foreach ($post['items'] as $sortOrder => $item) {
+            $menuItem = MenuItem::findOne($item['id']);
+            $menuItem->parentItemId = strlen($item['parent_id']) > 0 ? $item['parent_id'] : null;
+            $menuItem->sortOrder = $sortOrder;
+
+            if ($menuItem->save() === false) {
+                return [
+                    'statusCode' => 500,
+                    'message' => "Could not update sort order of items: $menuItem->getErrors()",
+                ];
+            }
+        }
+
+        return [
+            'statusCode' => 200,
+            'message' => 'OK',
+        ];
     }
 
     /**
