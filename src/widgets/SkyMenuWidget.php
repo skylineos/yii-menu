@@ -43,6 +43,7 @@ class SkyMenuWidget extends Widget
             'items' => $this->getItems(null),
             'encodeLabels' => $this->template->encodeLabels,
             'options' => $this->template->wrapperOptions,
+            'dropdownClass' => \Yii::$app->getModule('menu')->dropdownClass,
         ]);
     }
 
