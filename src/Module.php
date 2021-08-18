@@ -45,6 +45,13 @@ class Module extends \yii\base\Module
      */
     public string $viewPath = '@vendor/skylineos/yii-menu/src/views';
 
+    /**
+     * @see https://www.yiiframework.com/extension/yiisoft/yii2-bootstrap4/doc/api/2.0/yii-bootstrap4-dropdown
+     *
+     * @var string
+     */
+    public string $dropdownPath = 'yii\botstrap4\Dropdown';
+
     public function init()
     {
         parent::init();

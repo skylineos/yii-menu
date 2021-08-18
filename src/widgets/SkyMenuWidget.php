@@ -1,73 +1,75 @@
 <?php
 
-namespace skylineos\yii\menu\widgets;
+namespace app\modules\frontend\widgets\navigation;
 
+use yii\base\Widget;
+use yii\helpers\Url;
+use skylineos\yii\menu\models\Menu;
 use skylineos\yii\menu\models\MenuItem;
 
-class SkyMenuWidget extends \yii\base\Widget
+class SkyMenuWidget extends Widget
 {
     /**
-     * Pass the path to your template view. Should be some incarnation of \yii\bootstrap\Menu
-     * If the simplicity of your menu suits this widget, you can always just override the view
-     *
-     * @var string
-     */
-    public string $view = 'menu';
-
-    /**
-     * The id of the menu for which we should build the widget
+     * The id of the menu to load
      *
      * @var integer
      */
-    public int $menuId;
+    public ?int $menuId = null;
 
-    /**
-     * @inheritDoc
-     */
-    public function init()
-    {
-        parent::init();
+    private $template;
 
-        if ($this->menuId === null) {
-            $this->menuId = Menu::find()->one();
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function run()
     {
-        return $this->render($this->view, [
-            'items' => $this->getItems(),
+        if ($this->menuId === null) {
+            throw new yii\web\BadRequestHttpException('You must provide a menuId');
+        }
+
+        $menu = Menu::findOne($this->menuId);
+
+        if (!$menu) {
+            throw new yii\web\NotFoundHttpException('Menu was not found');
+        }
+
+        return $this->render('sky-menu', [
+            'menu' => $this->buildMenu($menu->id, $menu->template),
         ]);
     }
 
-    /**
-     * Recursively build the menu items array
-     *
-     * @param integer $parentItemId
-     * @return array
-     */
-    private function getItems(int $parentItemId = null): array
+    private function buildMenu(int $menuId, string $menuTemplate): string
+    {
+        $this->template = new $menuTemplate();
+
+        return \yii\bootstrap4\Nav::widget([
+            'items' => $this->getItems(null),
+            'encodeLabels' => $this->template->encodeLabels,
+            'options' => $this->template->wrapperOptions,
+        ]);
+    }
+
+    private function getItems(?int $parentItemId): array
     {
         $items = [];
+
         $menuItems = MenuItem::find()
             ->where([
-                'menuId' => $this->menuId,
                 'parentItemId' => $parentItemId,
+                'menuId' => $this->menuId,
             ])
             ->orderBy('sortOrder ASC')
             ->all();
 
         foreach ($menuItems as $item) {
+            if ($item->template !== null) {
+                $itemTemplate = $item->template;
+                $this->template = new $itemTemplate();
+            }
+
             $items[] = [
-                'label' => $item->title,
-                'url' => $item->linkTo,
+                'label' => \str_replace('{$label}', $item->title, $this->template->labelTemplate),
+                'url' => Url::to($item->linkTo, $this->template->urlScheme),
+                'options' => $this->template->itemOptions,
+                'linkOptions' => \array_merge($this->template->linkOptions, ['target' => $item->linkTarget]),
                 'items' => $this->getItems($item->id),
-                'linkOptions' => [
-                    'target' => $item->linkTarget,
-                ]
             ];
         }
 
