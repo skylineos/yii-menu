@@ -30,7 +30,6 @@ $(function() {
 
     $('.list-group-item').click( function(e) {
         $.get('/menu/menu-item/view?id=' + $(this).attr('data-id'), function(data) {
-            console.table(data);
             $('#menuitem-id').val(data.id);
             $('#menuitem-title').val(data.title).removeAttr('disabled');
             $('#menuitem-linkto').val(data.linkTo).removeAttr('disabled').trigger('change');

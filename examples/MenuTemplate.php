@@ -49,4 +49,13 @@ class MyMenuTemplate
      * @var array
      */
     public array $linkOptions = ['class' => 'menu-link'];
+
+    /**
+     * Namespace to the dropdown class we're going to use for this particular template.
+     * The dropdownClass in question should be compatible with or extend \yii\bootstra4\Drowndown
+     * @see examples/CanvasStandardDropdown.php
+     *
+     * @var string
+     */
+    public string $dropdownClass = 'app\modules\frontend\widgets\navigation\CanvasStandardDropdown';
 }

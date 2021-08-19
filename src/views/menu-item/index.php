@@ -16,9 +16,9 @@ ExtAsset::register($this);
 <div class="row">
     <div class="col-md-4">
         <div class="card">
-
             <div class="card-body just-padding">
-                <h3>Menu Items <small>(Drag and drop to sort)</small></h3>
+                <h4>Menu Items <small>(Drag and drop to sort)</small></h4>
+                <hr>
 
                 <?= $menuTree ?>
             </div>
@@ -35,10 +35,8 @@ ExtAsset::register($this);
         </div>
     </div>
     <div class="col">
-        <div class="card position-fixed">
+        <div class="card">
             <div class="card-body">
-
-                <h3>Menu Item Details <small>(click a menu item to edit)</small></h3>
 
                 <?php $form = ActiveForm::begin([
                     'action' => '/menu/menu-item/update',
@@ -48,7 +46,11 @@ ExtAsset::register($this);
                     'id' => 'menuitem-id',
                 ]) ?>
 
+                <h4>Menu Item Details</h4>
+                <hr>
+
                 <div class="row">
+
                     <div class="col">
                         <div class="form-group">
                             <label>Title</label>
@@ -66,9 +68,9 @@ ExtAsset::register($this);
                                 null,
                                 \Yii::$app->getModule('menu')->templates,
                                 [
-                                    'class' => 'form-control',
                                     'id' => 'menuitem-template',
                                     'disabled' => true,
+                                    'style' => 'display: inline-block; width: 100%;'
                                 ]
                             ) ?>
                             <div class="help-text">Will be disabled if the menu item depth exceeds that which templating can support</div>
@@ -108,12 +110,15 @@ ExtAsset::register($this);
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+                        </div>
+                    </div>
                 </div>
 
                 <?php ActiveForm::end(); ?>
-
 
             </div>
         </div>

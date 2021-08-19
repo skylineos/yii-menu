@@ -34,14 +34,11 @@ Once configured (below), you should be able to access the manager at /menu/menu/
          * Additional templates can be added as such: (namespace => display/friendly name)
          * @see [Building Templates]
          */
-        'menuTemplates' => [
-            'app\widgets\menus\MenuWidget' => 'My Custom Widget',
+        'templates' => [
+            'skylineos\yii\menu\widgets\SkyMenuWidget' => 'Useful for simple demo',
             'app\widgets\menus\OtherMenuWidget' => 'My Other Custom Widget',
         ],
-        'dropdownTemplates' => [
-            'app\widget\menus\DropDownWidget' => 'My Custom Drop Down',
-            'app\widget\menus\MegaMenuWidget' => 'My Mega Menu Drop Down',
-        ]
+        
         'targets' => [
             // See 'Defining Targets'
         ]

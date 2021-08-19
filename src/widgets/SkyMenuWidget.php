@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\frontend\widgets\navigation;
+namespace skylineos\yii\menu\widgets;
 
 use yii\base\Widget;
 use yii\helpers\Url;
@@ -17,6 +17,11 @@ class SkyMenuWidget extends Widget
     public ?int $menuId = null;
 
     private $template;
+
+    public function getViewPath()
+    {
+        return \Yii::getAlias('@vendor/skylineos/yii-menu/src/widgets/views', $throwException = true);
+    }
 
     public function run()
     {
@@ -37,13 +42,14 @@ class SkyMenuWidget extends Widget
 
     private function buildMenu(int $menuId, string $menuTemplate): string
     {
+        $menuModule = \Yii::$app->getModule('menu');
         $this->template = new $menuTemplate();
 
-        return \yii\bootstrap4\Nav::widget([
+        return $menuModule->navClass::widget([
             'items' => $this->getItems(null),
-            'encodeLabels' => $this->template->encodeLabels,
-            'options' => $this->template->wrapperOptions,
-            'dropdownClass' => \Yii::$app->getModule('menu')->dropdownClass,
+            'encodeLabels' => $this->template->encodeLabels ?? true,
+            'options' => $this->template->wrapperOptions ?? [],
+            'dropdownClass' => $menuModule->dropdownClass,
         ]);
     }
 
@@ -65,13 +71,19 @@ class SkyMenuWidget extends Widget
                 $this->template = new $itemTemplate();
             }
 
-            $items[] = [
-                'label' => \str_replace('{$label}', $item->title, $this->template->labelTemplate),
-                'url' => Url::to($item->linkTo, $this->template->urlScheme),
-                'options' => $this->template->itemOptions,
-                'linkOptions' => \array_merge($this->template->linkOptions, ['target' => $item->linkTarget]),
+            $thisItem = [
+                'label' => \str_replace('{$label}', $item->title, $this->template->labelTemplate ?? '{$label}'),
+                'url' => Url::to($item->linkTo, $this->template->urlScheme ?? true),
+                'options' => $this->template->itemOptions ?? [],
+                'linkOptions' => \array_merge($this->template->linkOptions ?? [], ['target' => $item->linkTarget]),
                 'items' => $this->getItems($item->id),
             ];
+
+            if (isset($this->template->dropdownClass)) {
+                $thisItem['dropdownClass'] = $this->template->dropdownClass;
+            }
+
+            $items[] = $thisItem;
         }
 
         return $items;
