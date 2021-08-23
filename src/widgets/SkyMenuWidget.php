@@ -32,6 +32,13 @@ class SkyMenuWidget extends Widget
     public bool $encodeLabels = false;
 
     /**
+     * @see https://www.yiiframework.com/extension/yiisoft/yii2-bootstrap4/doc/api/2.0/yii-bootstrap4-widget#$options-detail
+     *
+     * @var array
+     */
+    public array $wrapperOptions = [];
+
+    /**
      * @see https://www.yiiframework.com/doc/api/2.0/yii-helpers-baseurl#to()-detail
      * @property scheme
      *
