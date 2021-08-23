@@ -16,6 +16,14 @@ class SkyMenuWidget extends Widget
      */
     public ?int $menuId = null;
 
+    /**
+     * The template used to render the template. {$label} will be replaced with the
+     * actual label. If you put HTML in the template, be sure to set encodeLabels to false
+     *
+     * @var string
+     */
+    public string $labelTemplate = '{$label}';
+
     private $template;
 
     public function getViewPath()
