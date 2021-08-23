@@ -25,6 +25,13 @@ class SkyMenuWidget extends Widget
     public string $labelTemplate = '{$label}';
 
     /**
+     * @see https://www.yiiframework.com/extension/yiisoft/yii2-bootstrap4/doc/api/2.0/yii-bootstrap4-nav#$encodeLabels-detail
+     *
+     * @var boolean
+     */
+    public bool $encodeLabels = false;
+
+    /**
      * @see https://www.yiiframework.com/doc/api/2.0/yii-helpers-baseurl#to()-detail
      * @property scheme
      *
