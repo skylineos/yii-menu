@@ -24,6 +24,31 @@ class SkyMenuWidget extends Widget
      */
     public string $labelTemplate = '{$label}';
 
+    /**
+     * @see https://www.yiiframework.com/doc/api/2.0/yii-helpers-baseurl#to()-detail
+     * @property scheme
+     *
+     * @var boolean
+     */
+    public bool $urlScheme = true;
+
+    /**
+     * @https://www.yiiframework.com/extension/yiisoft/yii2-bootstrap4/doc/api/2.0/yii-bootstrap4-nav#$items-detail
+     * @property options
+     *
+     * @var array
+     */
+    public array $itemOptions = ['class' => 'menu-item'];
+
+    /**
+     * @https://www.yiiframework.com/extension/yiisoft/yii2-bootstrap4/doc/api/2.0/yii-bootstrap4-nav#$items-detail
+     * @property linkOptions
+     *
+     * @var array
+     */
+    public array $linkOptions = ['class' => 'menu-link'];
+
+
     private $template;
 
     public function getViewPath()
