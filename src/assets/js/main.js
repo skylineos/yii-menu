@@ -37,6 +37,17 @@ $(function() {
             $('#menuitem-id').val(data.id);
             $('#menuitem-title').val(data.title).removeAttr('disabled');
             $('#menuitem-linkto').val(data.linkTo).removeAttr('disabled').trigger('change');
+
+            // Update the select2, adding a dynamic tag is necessary
+            if ($('#menuitem-linkto').find("option[value='" + data.linkTo + "']").length) {
+                $('#menuitem-linkto').val(data.linkTo).trigger('change');
+            } else { 
+                // Create a DOM Option and pre-select by default
+                var newOption = new Option(data.linkTo, data.linkTo, true, true);
+                // Append it to the select
+                $('#menuitem-linkto').append(newOption).trigger('change');
+            } 
+
             $('#menuitem-linktarget').val(data.linkTarget).removeAttr('disabled').trigger('change');
             $('#menuitem-template').val(data.template).trigger('change');
 
