@@ -1,6 +1,10 @@
 $(function() {
     const DEBUG = true;
 
+    $('#menuitem-linkto').select2({
+        tags: true
+    });
+
     $('.list-group-item').on('click', function() {
       $('.fas', this)
         .toggleClass('fa-angle-right')
