@@ -73,13 +73,13 @@ class SkyMenuWidget extends Widget
     public function run()
     {
         if ($this->menuId === null) {
-            throw new yii\web\BadRequestHttpException('You must provide a menuId');
+            throw new \yii\web\BadRequestHttpException('You must provide a menuId');
         }
 
         $menu = Menu::findOne($this->menuId);
 
         if (!$menu) {
-            throw new yii\web\NotFoundHttpException('Menu was not found');
+            throw new \yii\web\NotFoundHttpException('Menu was not found');
         }
 
         return $this->render('sky-menu', [
