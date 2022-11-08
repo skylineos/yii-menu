@@ -104,9 +104,15 @@ class MenuItemController extends \yii\web\Controller
      */
     public function actionUpdate()
     {
-        $model = $this->findModel(Yii::$app->request->post()['MenuItem']['id']);
+        $post = Yii::$app->request->post();
+        $model = $this->findModel($post['MenuItem']['id']);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        // Handle setting a menu item's "linkTo" to empty
+        if (isset($post['MenuItem']['linkTo']) === false) {
+            $post['MenuItem']['linkTo'] = '';
+        }
+
+        if ($model->load($post) && $model->save()) {
             return $this->redirect(['menu/update', 'id' => $model->menuId]);
         }
     }
